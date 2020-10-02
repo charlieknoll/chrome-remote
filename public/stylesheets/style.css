@@ -24,7 +24,8 @@ body {
 }
 .channel-button {
   margin: 8px;
-  font-size: 36px;
+  padding: 8px;
+  font-size: 48px;
 }
 @media only screen and (max-height: 750px) and (orientation: landscape) {
   .remote-button {
