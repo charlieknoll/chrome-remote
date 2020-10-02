@@ -29,6 +29,8 @@ const playerController = {
       chromeRemote.toggleFullScreen()
     })
   },
-
+  channel: async function (url) {
+    await pageProvider.page.goto(url, { waitUntil: 'load' })
+  }
 }
 module.exports = playerController

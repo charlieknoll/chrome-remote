@@ -10,24 +10,30 @@ function ViewModel() {
       console.error(e)
     }
   }
+  this.setupHandlers = async function (className) {
+    ;[].slice.call(document.getElementsByClassName(className)).map((i) => {
+      i.onclick = async function (e) {
+        e.preventDefault()
+        let path = e.target.dataset.path
+        if (!path) path = e.target.parentNode.dataset.path
+        if (!path) path = e.target.parentNode.parentNode.dataset.path
+        let param = e.target.dataset.param
+          ? '/' + encodeURIComponent(e.target.dataset.param)
+          : ''
 
+        try {
+          await fetch(window.location.origin + '/player/' + path + param)
+        } catch (e) {
+          console.error(e)
+        }
+      }
+    })
+  }
   this.init = async function () {
     console.log('init')
-    ;[].slice
-      .call(document.getElementsByClassName('remote-button'))
-      .map((i) => {
-        i.onclick = async function (e) {
-          e.preventDefault()
-          let path = e.target.dataset.path
-          if (!path) path = e.target.parentNode.dataset.path
-          if (!path) path = e.target.parentNode.parentNode.dataset.path
-          try {
-            await fetch(window.location.origin + '/player/' + path)
-          } catch (e) {
-            console.error(e)
-          }
-        }
-      })
+    await this.setupHandlers('remote-button')
+    await this.setupHandlers('channel-button')
+
     // window.setInterval(async function () {
     //   var status = await viewModel.getStatus()
     //   viewModel.status(status.currentTimeDisplay)

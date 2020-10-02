@@ -1,34 +1,37 @@
-    body {
-      max-width: 980px;
-    }
+body {
+  max-width: 980px;
+}
 
-    .remote-container {
-      display: flex;
-      flex-wrap: wrap;
-      flex-direction: row;
-      padding: 10px;
-    }
-    #progress {
-      font-size: 4em;
-    }
-    .remote-button {
-      background-color: #f1f1f1;
-      /* margin: 10px; */
-      padding: 8px;
-      font-size: 64px;
-      flex: 0 50%;
-      height: 12vh;
-      width: 100%;
-      margin-top: 10px;
-      margin-bottom: 10px;
-    }
-    @media only screen and (max-height: 750px) and (orientation: landscape) {
-      .remote-button {
-        height: 20vh;
-      }
-    }
+.remote-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  padding: 10px;
+}
+#progress {
+  font-size: 4em;
+}
+.remote-button {
+  background-color: #f1f1f1;
+  /* margin: 10px; */
+  padding: 8px;
+  font-size: 64px;
+  flex: 0 50%;
+  height: 12vh;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.channel-button {
+  margin: 8px;
+  font-size: 36px;
+}
+@media only screen and (max-height: 750px) and (orientation: landscape) {
+  .remote-button {
+    height: 20vh;
+  }
+}
 
-    .full-width {
-      flex-basis: 100%;
-
-    }
+.full-width {
+  flex-basis: 100%;
+}
