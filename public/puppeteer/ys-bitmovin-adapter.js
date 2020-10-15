@@ -18,6 +18,23 @@ var chromeRemote = {
   },
   getCurrentTimeDisplay: function () {
     return 'LIVE'
+  },
+  seek: function (t) {
+    //if live use timeShift
+    if (ysPlayer().isLive()) {
+      const timeShift = ysPlayer().getTimeShift()
+      const maxTimeShift = ysPlayer().getMaxTimeShift()
+      const delta = parseInt(t)
+      if (delta + timeShift > 0) {
+        ysPlayer().timeShift(0)
+        return
+      }
+      if (delta + timeShift < maxTimeShift) {
+        ysPlayer().timeShift(maxTimeShift)
+        return
+      }
+      ysPlayer().timeShift(delta + timeShift)
+    }
   }
 }
 
