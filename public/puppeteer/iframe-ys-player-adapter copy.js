@@ -23,6 +23,7 @@ var chromeRemote = {
   toggleFullScreen: function () {
     document
       .querySelector("#player")
+      .contentDocument.querySelector("#player")
       .querySelector("button[data-fullscreen]")
       .click();
   },
@@ -31,7 +32,11 @@ var chromeRemote = {
 //Clear ad box
 window.setTimeout(() => {
   console.log("playing...");
-  document.querySelector("#player img[onclick]").click();
   chromeRemote.play();
   chromeRemote.toggleFullScreen();
-}, 2000);
+  document
+    .querySelector("#player")
+    .contentDocument.querySelector("#player")
+    .querySelector("img[onclick]")
+    .click();
+}, 500);
