@@ -21,6 +21,10 @@ function normalizePort(val) {
 
   return false;
 }
+function _sleep(ms) {
+  console.log(`Sleeping for ${ms / 1000} seconds...`);
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 const url = "http://localhost:" + port + "/";
 const backendUrl = url + "backend.html";
 const pageProvider = {
@@ -29,6 +33,14 @@ const pageProvider = {
       browserURL: "http://127.0.0.1:9223",
       defaultViewport: null,
     });
+    this.page = await browser.newPage();
+
+    const response = await this.page.goto(backendUrl, {
+      waitUntil: "networkidle0",
+    });
+    this.page.on("domcontentloaded", await this.setup.bind(this));
+    return;
+
     const pages = await browser.pages();
     for (var i = 0; i < pages.length; i++) {
       if (
@@ -78,6 +90,8 @@ const pageProvider = {
     await pageProvider.page.addScriptTag({
       url: url + "puppeteer/media-detector.js",
     });
+
+    await _sleep(6000);
     var script = await pageProvider.page.evaluate(() => {
       return mediaDetector.detect();
     });
@@ -102,11 +116,17 @@ const pageProvider = {
         // const frame = await test.contentFrame();
 
         pageProvider.pageFrame = await iframeElement.contentFrame();
+      } else {
+        pageProvider.pageFrame = pageProvider.page;
       }
 
       await pageProvider.pageFrame.addScriptTag({
         url: url + "puppeteer/" + script,
       });
+    } else {
+      console.log(
+        "Chrome Remote media-detector.js could not detect a supported player."
+      );
     }
   },
   init: async function () {
