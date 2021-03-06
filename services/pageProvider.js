@@ -55,13 +55,25 @@ const pageProvider = {
 
       const response = await this.page.goto(backendUrl, { waitUntil: "load" });
     }
-    if (this.page) this.page.on("load", await this.setup.bind(this));
-    await this.setup.bind(this);
+    //if (this.page) this.page.on("load", await this.setup.bind(this));
+    //await this.setup.bind(this);
+    //http://yoursports.stream/ing/hockey?v=MjAxNDM5NTQwMQ==
+    pageProvider.pageFrame = this.page.pageFrame;
+    const iframeElement = await pageProvider.page.$('iframe[name="tmaplayer"');
+    const map = iframeElement._frameManager._frames;
+    //console.log("frames", map);
+    map.forEach((v) => {
+      if (v.url().includes("http://yoursports.stream/ing/hockey")) {
+        console.log("setting page frame...");
+        pageProvider.pageFrame = v;
+      }
+    });
+    await this.setup();
   },
   page: null,
   pageFrame: null,
   setup: async function () {
-    this.pageFrame = this.page;
+    //this.pageFrame = this.page;
     //inject javascript detector
     await pageProvider.page.addScriptTag({
       url: url + "puppeteer/media-detector.js",
