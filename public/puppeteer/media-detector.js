@@ -1,6 +1,6 @@
 var mediaDetector = {
   detect: function () {
-    if (window.nbcplayer != undefined) return "nbcsports-adapter.js";
+    if (window.nbcsplayer != undefined) return "nbcsports-adapter.js";
     var player = document.getElementById("player");
     //return 'test'
     if (player && !player.contentWindow) {
@@ -11,7 +11,9 @@ var mediaDetector = {
     //if (player.contentWindow.player != undefined)
     var iframeEl = document.querySelector("iframe[name='tmaplayer']");
     if (iframeEl) {
-      return "iframe[name='tmaplayer']#" + player.src + "#ys-player-adapter.js";
+      return (
+        "iframe[name='tmaplayer']#" + iframeEl.src + "#ys-player-adapter.js"
+      );
     }
     return false;
   },

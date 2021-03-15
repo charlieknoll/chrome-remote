@@ -90,8 +90,11 @@ const pageProvider = {
     await pageProvider.page.addScriptTag({
       url: url + "puppeteer/media-detector.js",
     });
-
-    await _sleep(6000);
+    if ((await pageProvider.page.url()).includes("racepass")) {
+      await _sleep(6000);
+    } else {
+      await _sleep(3000);
+    }
     var script = await pageProvider.page.evaluate(() => {
       return mediaDetector.detect();
     });
@@ -110,12 +113,12 @@ const pageProvider = {
             pageProvider.pageFrame = v;
           }
         });
-        // const test = await pageProvider.page.$(
-        //   'iframe[src="//yoursports.stream/ing/hockey?v=MjAxMzA0ODQ2MQ=="'
-        // );
-        // const frame = await test.contentFrame();
-
-        pageProvider.pageFrame = await iframeElement.contentFrame();
+        if (pageProvider.pageFrame == null) {
+          console.log(
+            "Embedded iframe not found. Did you start Google Chrome with the following flags? --disable-features=IsolateOrigins,site-per-process"
+          );
+          return;
+        }
       } else {
         pageProvider.pageFrame = pageProvider.page;
       }
@@ -127,6 +130,7 @@ const pageProvider = {
       console.log(
         "Chrome Remote media-detector.js could not detect a supported player."
       );
+      return;
     }
   },
   init: async function () {
